@@ -1,31 +1,30 @@
 import java.util.Objects;
-
+import java.util.Scanner;
 public class Product {
-  private String productID;
-  private String name;
-  private String description;
-  private String category;
-  private Double price;
-  private Integer quantity;
+   private String productId;
+   private String name;
+   private String description;
+   private String category;
+   private Double price;
+   private Integer stock;
 
-  public Product(String productID, String name, String description, String category, Double price, Integer quantity) {
-     this.productID = productID;
+
+  public Product(String productId, String name, String description, String category, Double price, Integer stock) {
+     this.productId = productId;
      this.name = name;
      this.description = description;
      this.category = category;
      this.price = price;
-     this.quantity = quantity;
+     this.stock = stock;
   }
   
-  public Product(){
+  
+  public String getProductId() {
+     return productId;
   }
 
-  public String getProductID() {
-     return productID;
-  }
-
-  public void setProductID(String productID) {
-     this.productID = productID;
+  public void setProductId(String productId) {
+     this.productId = productId;
   }
 
   public String getName() {
@@ -60,17 +59,17 @@ public class Product {
      this.price = price;
   }
 
-  public Integer getQuantity() {
-     return quantity;
+  public Integer getStock() {
+     return stock;
   }
 
-  public void setQuantity(Integer quantity) {
-     this.quantity = quantity;
+  public void setStock(Integer stock) {
+     this.stock = stock;
   }
 
   @Override
   public String toString() {
-     return "ID: " + productID + ", Name: " + name;
+     return " - ID: " + productId + "\n - Name: " + name + "\n - Description: " + description+ "\n - Category: " + category +  "\n - Price: " + price + "\n - Stock: " + stock;
   }
   
 }

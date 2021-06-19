@@ -15,6 +15,14 @@ public class Customer {
       this.password = password;
   }
 
+  public String getCustomerId() {
+   return customerId;
+}
+
+public void setCustomerId(String customerId) {
+   this.customerId = customerId;
+}
+
   public String getUsername() {
      return username;
   }
