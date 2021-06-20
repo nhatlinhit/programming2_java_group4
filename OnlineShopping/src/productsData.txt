@@ -1,2 +1,6 @@
-001/tivi samsung/smart/tivi/12484.0/12
-002/Laptop/i5/laptop/23699.0/145
+001/Tivi Samsung 55in/Smart Tivi/tivi/500.0
+002/Laptop Dell 15in 2021/Core i7, Ram16GB/laptop/1000.0
+003/Smartphone Samsung S21/256GB/cellphone/700.0
+004/Keyboard Apple Magic 2/Mini size/keyboard/100.0
+005/Apple watch S6/Pink color/smart watch/300.0
+006/Monitor Dell 24in/Ultra sharp/monitor/250.0

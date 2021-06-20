@@ -19,10 +19,10 @@ public class ReadProductData {
         String[] productInfos = line.split("/");
 				// convert data type
 				double price = Double.parseDouble(productInfos[4]);
-				int stock = Integer.parseInt(productInfos[5]);
+				
         // Create product
 				
-        Product product = new Product(productInfos[0], productInfos[1], productInfos[2], productInfos[3], price, stock);
+        Product product = new Product(productInfos[0], productInfos[1], productInfos[2], productInfos[3], price);
         products.add(product);
 
 				System.out.println("------ Product ["+ num +"] -------");

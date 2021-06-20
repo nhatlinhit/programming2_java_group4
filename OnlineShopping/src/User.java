@@ -54,6 +54,6 @@ public class User {
 
   @Override
   public String toString() {
-     return "User{" + "userId=" + userId + "username=" + username + "role=" + role + ", name=" + name + ", phone=" + phone + ", address=" + address + ", creditcard=" + creditcard + '}';
+    return " - ID: #" + userId + "\n - Username: " + username + "\n - Role: " + role+ "\n - Name: " + name +  "\n - Phone: " + phone + "\n - Address: " + address + "\n - Credit Card: " + creditcard;
   }
 }

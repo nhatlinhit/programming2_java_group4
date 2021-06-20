@@ -6,6 +6,7 @@ import java.io.IOException;  // Import the IOException class to handle errors
 public class App {
   static ArrayList<User> users;
   static ArrayList<Cart> cartList = new ArrayList<Cart>();
+  static ArrayList<Order> orderList = new ArrayList<Order>();
   static Order currentOrder;
   static boolean isLogin = false;
   static boolean isAdmin = false;
@@ -24,7 +25,11 @@ public class App {
   static void showWelcomeStatement() {
       Scanner input = new Scanner(System.in);
       if (isLogin) { // Show home to user logged in
-        showWelcomeUserStatement();
+        if (isAdmin) {
+          showWelcomeAdminStatement();
+        } else {
+          showWelcomeUserStatement();
+        }
       } else {
         System.out.println("Welcome, customer! \n");
         System.out.println("[1] View products");
@@ -89,7 +94,74 @@ public class App {
         System.out.println("\n======= Products ====== \n");
         showListProduct();
     }
-}
+  }
+
+  static void showWelcomeAdminStatement() {
+    Scanner input = new Scanner(System.in);
+    System.out.println("\n =========== Administration Management =============== \n");
+    System.out.println("[1] View products");
+    System.out.println("[2] Create products");
+    System.out.println("[3] View users");
+    System.out.println("[4] Create users");
+    System.out.println("[5] View orders");
+    System.out.println("[6] Log out");
+    System.out.print("\n Choose action [_]: ");
+    // customer input action
+    int action = input.nextInt();
+
+    switch (action) {
+      case 1:
+        System.out.println("\n========= Products ======== \n");
+        ReadProductData productData = new ReadProductData();
+        ArrayList<Product> products = productData.readData();
+
+        showWelcomeAdminStatement();
+        break;
+      case 2:
+        System.out.println("\n========= Create Products ======== \n");
+        WriteProductData writeProductData = new WriteProductData();
+        try {
+          writeProductData.writeProducts();
+        } catch (IOException e) {
+          e.printStackTrace();
+        }
+        break;
+      case 3:
+        System.out.println("\n========= Users ======== \n");
+        for (int i = 0; i < users.size(); i++) {
+          int count = i + 1;
+          System.out.println("------ User ["+ count +"] -------");
+          System.out.println(users.get(i));
+          System.out.println();
+        }
+        showWelcomeAdminStatement();
+        break;
+      case 4:
+        System.out.println("\n========= Create Users ======== \n");
+        WriteUserData writeUserData = new WriteUserData();
+        try {
+          writeUserData.writeUsers();
+        } catch (IOException e) {
+          e.printStackTrace();
+        }
+        break;
+      case 5:
+        System.out.println("\n========= Orders ======== \n");
+        for (int i = 0; i < orderList.size(); i++) {
+          int count = i+1;
+          System.out.println("------ Order ["+ count +"] -------");
+          System.out.println(orderList.get(i));
+          System.out.println();
+        }
+        showWelcomeAdminStatement();
+        break;
+      case 6:
+        logout();
+        break;
+      default:
+        showWelcomeAdminStatement();
+    }
+  }
 
   static void showListProduct() {
     Scanner input = new Scanner(System.in);
@@ -119,7 +191,7 @@ public class App {
         isLogin = true;
         loggedUser = user;
         // Check admin
-        if (user.getRole() == "admin") { 
+        if (user.getRole().equals("admin")) { 
           isAdmin = true;
         }
         System.out.println("\n >>> Login success! <<<");
@@ -176,7 +248,7 @@ public class App {
       myWriter.close();
       User newAccount = new User(userId, username, password, role, name, phone, address, creditCard);
       users.add(newAccount);
-      
+
       System.out.println();
       System.out.println("[1] Login");
       System.out.println("[2] Back to home");
@@ -303,6 +375,7 @@ public class App {
 
       if (action == 1) {
         currentOrder.payment();
+        orderList.add(currentOrder);
         System.out.println("\n Payment successful amount "+ currentOrder.getTotal() +" for order #"+currentOrder.getOrderID()+". \n");
         System.out.println("\n=========== Order ==============");
         System.out.println(currentOrder);
@@ -310,6 +383,7 @@ public class App {
         showWelcomeStatement();
       } else {
         currentOrder.cancelOrder();
+        orderList.add(currentOrder);
         System.out.println("\n Order #"+currentOrder.getOrderID()+" is cancelled!\n");
         System.out.println("\n=========== Order ==============");
         System.out.println(currentOrder);

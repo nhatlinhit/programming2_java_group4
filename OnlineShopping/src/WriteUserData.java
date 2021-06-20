@@ -4,11 +4,11 @@ import java.io.IOException;  // Import the IOException class to handle errors
 import java.util.Scanner;
 
 public class WriteUserData {
-  public static void main(String[] args) throws IOException {
+  public void writeUsers() throws IOException {
     
     boolean continueInputData = true;
     int isContinue = 1;
-    FileWriter myWriter = new FileWriter("usersData.txt", false); // false replace file
+    FileWriter myWriter = new FileWriter("usersData.txt", true); // false replace file
     int count = 1;
     
     do {

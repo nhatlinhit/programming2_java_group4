@@ -1,6 +1,8 @@
 import java.text.DecimalFormat;
 import java.text.NumberFormat;
 import java.util.*;
+import java.io.FileWriter;   // Import the FileWriter class
+import java.io.IOException;  // Import the IOException class to handle errors
 
 public class Order {
    enum OrderStatus {
@@ -92,7 +94,7 @@ public class Order {
 
   @Override
   public String toString() {
-     return "\n - Order ID: #" + getOrderID() + "\n - Order Date: " + orderDate + "\n - Order status: " + status + "\n - User's name: " + getUser().getName()  + "\n Items: " + cartItems + "\n - Total: " + getTotal() + '\n';
+     return "\n - Order ID: #" + getOrderID() + "\n - Order Date: " + orderDate + "\n - Order status: " + status + "\n - User's name: " + getUser().getName()  + "\n Items: \n" + cartItems + "\n - Total: " + getTotal() + '\n';
   }
   
 }

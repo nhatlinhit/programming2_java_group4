@@ -4,11 +4,11 @@ import java.util.Scanner;
 
 public class WriteProductData {
   
-  public static void main(String[] args) throws IOException {
+  public void writeProducts() throws IOException {
     
     boolean continueInputData = true;
     int isContinue = 1;
-    FileWriter myWriter = new FileWriter("productsData.txt", false); // false replace file
+    FileWriter myWriter = new FileWriter("productsData.txt", true); // false replace file
 
     do {
       Scanner input = new Scanner(System.in);
@@ -19,11 +19,10 @@ public class WriteProductData {
       String desc = newProduct.getDescription();
       String category = newProduct.getCategory();
       double price = newProduct.getPrice();
-      int stock = newProduct.getStock();
       
-      System.out.println("Product info: \n - ID: " + productId + "\n - Name: " + name + "\n - Description: " + desc+ "\n - Category: " + category +  "\n - Price: " + price + "\n - stock: " + stock );
+      System.out.println("Product info: \n - ID: " + productId + "\n - Name: " + name + "\n - Description: " + desc+ "\n - Category: " + category +  "\n - Price: " + price );
 
-      String productDataLine =  productId + "/" + name + "/" + desc + "/" + category + "/" + price + "/" + stock + "\n";
+      String productDataLine =  productId + "/" + name + "/" + desc + "/" + category + "/" + price + "\n";
 
       myWriter.write(productDataLine);
 
@@ -60,10 +59,7 @@ public class WriteProductData {
     System.out.print("Enter product's price: ");
     Double price = input.nextDouble();
 
-    System.out.print("Enter product's stock: ");
-    int stock = input.nextInt();
-
-    Product inputProd = new Product(productId, name, desc, category, price, stock);
+    Product inputProd = new Product(productId, name, desc, category, price);
 
     return inputProd;
   }
