@@ -44,6 +44,14 @@ public class User {
     this.role = role;
   }
 
+  public String getName() {
+    return name;
+  }
+
+  public void setName(String name) {
+      this.name = name;
+  }
+
   @Override
   public String toString() {
      return "User{" + "userId=" + userId + "username=" + username + "role=" + role + ", name=" + name + ", phone=" + phone + ", address=" + address + ", creditcard=" + creditcard + '}';

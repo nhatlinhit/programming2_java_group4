@@ -5,58 +5,94 @@ public class App {
   static ArrayList<Cart> cartList = new ArrayList<Cart>();
   static boolean isLogin = false;
   static boolean isAdmin = false;
+  static User loggedUser;
   public static void main(String[] args) {
       Scanner input = new Scanner(System.in);
+      System.out.println("\n ============ Shopping Online System - Group 4 =============== \n");
 
-      showWelcomeStatement(input);
+      showWelcomeStatement();
 
       input.close();
   }
 
-  static void showWelcomeStatement(Scanner input) {
-      System.out.println("============ Shopping Online System - Group 4 =============== ");
-      System.out.println("Welcome, customer! ");
-      System.out.println("[1] Browse products");
-      System.out.println("[2] Login");
-      System.out.println("[3] Register account");
-      System.out.println("[4] View cart");
-      System.out.print("Choose action [_]: ");
-      // customer input action
-      int action = input.nextInt();
+  static void showWelcomeStatement() {
+      Scanner input = new Scanner(System.in);
+      if (isLogin) { // Show home to user logged in
+        showWelcomeUserStatement();
+      } else {
+        System.out.println("Welcome, customer! \n");
+        System.out.println("[1] View products");
+        System.out.println("[2] Login");
+        System.out.println("[3] Register account");
+        System.out.println("[4] View cart");
+        System.out.print("\n Choose action [_]: ");
+        // customer input action
+        int action = input.nextInt();
 
-      switch (action) {
-        case 1:
-          System.out.println("\n ======= Products ====== \n");
-          showListProduct(input);
-          break;
-        case 2:
-          System.out.println("\n ======== Login ======== \n");
-          login();
-          break;
-        case 3:
-          System.out.println("\n ======== Register ======= \n");
-          break;
-        case 4:
-          System.out.println("\n ========= Cart ======== \n");
-          viewCart();
-          break;
-        default:
-          System.out.println("\n ======= Products ====== \n");
-          showListProduct(input);
+        switch (action) {
+          case 1:
+            System.out.println("\n========== Products ============ \n");
+            showListProduct();
+            break;
+          case 2:
+            System.out.println("\n======== Login ======== \n");
+            login();
+            break;
+          case 3:
+            System.out.println("\n======== Register ======= \n");
+            break;
+          case 4:
+            System.out.println("\n========= Cart ======== \n");
+            viewCart();
+            break;
+          default:
+            System.out.println("\n======= Products ====== \n");
+            showListProduct();
+        }
       }
   }
 
-  static void showListProduct(Scanner input) {
+  static void showWelcomeUserStatement() {
+    Scanner input = new Scanner(System.in);
+    System.out.println("Welcome, "+loggedUser.getName()+"! \n");
+    System.out.println("[1] View products");
+    System.out.println("[2] View cart");
+    System.out.println("[3] Log out");
+    System.out.print("\n Choose action [_]: ");
+    // customer input action
+    int action = input.nextInt();
+
+    switch (action) {
+      case 1:
+        System.out.println("\n========== Products ============ \n");
+        showListProduct();
+        break;
+      case 2:
+        System.out.println("\n========= Cart ======== \n");
+        viewCart();
+        break;
+      case 3:
+        logout();
+        break;
+      default:
+        System.out.println("\n======= Products ====== \n");
+        showListProduct();
+    }
+}
+
+  static void showListProduct() {
+    Scanner input = new Scanner(System.in);
     ReadProductData productData = new ReadProductData();
     ArrayList<Product> products = productData.readData();
     System.out.println("[1] Add product to cart");
-    System.out.println("[2] Back");
-    System.out.print("Choose action [_]: ");
+    System.out.println("[2] Back to home");
+    System.out.print("\n Choose action [_]: ");
     int action = input.nextInt();
     if (action == 1) {
       addToCart(input, products);
     } else {
-      showWelcomeStatement(input);
+      System.out.println("\n-----------------------------------\n");
+      showWelcomeStatement();
     }
   }
 
@@ -69,24 +105,40 @@ public class App {
     System.out.print("Enter password: ");
     String password = input.nextLine();
     
-    for ( User u: users) {
-      if (username.equals(u.getUsername()) && password.equals(u.getPassword())) {
+    for ( User user: users) {
+      if (username.equals(user.getUsername()) && password.equals(user.getPassword())) {
         isLogin = true;
+        loggedUser = user;
         // Check admin
-        if (u.getRole() == "admin") { 
+        if (user.getRole() == "admin") { 
           isAdmin = true;
         }
-        System.out.print("Login success!");
+        System.out.println("\n >>> Login success! <<<");
+        System.out.println("\n-----------------------------------\n");
+        showWelcomeStatement();
       }
     }
 
     if (!isLogin) {
-      System.out.print("Login fail!");
+      System.out.println("\n >>> Login fail! <<<\n");
+      System.out.println("[1] Try again?");
+      System.out.println("[2] Back to home");
+      System.out.print("\n Choose action [_]: ");
+      int action = input.nextInt();
+      if (action == 1) {
+        login();
+      } else {
+        System.out.println("\n-----------------------------------\n");
+        showWelcomeStatement();
+      }
     }
-    
-    // for (int i = 0; i < users.size(); i++) {
-    //   User us = new User
-    // }
+  }
+
+  static void logout() {
+    isLogin = false;
+    loggedUser = null;
+    System.out.println("\n-----------------------------------\n");
+    showWelcomeStatement();
   }
 
   static void addToCart(Scanner input, ArrayList<Product> products) {
@@ -108,18 +160,34 @@ public class App {
 
       if (isContinue == 2) {
         continueAddToCart = false;
-        showWelcomeStatement(input);
+        System.out.println("\n-----------------------------------\n");
+        showWelcomeStatement();
       }
     } while(continueAddToCart);
   }
 
   static void viewCart() {
     int num = 1;
-    for (Cart item : cartList) {
-      System.out.println("------ Cart Item ["+ num +"] -------");
-      System.out.println(item);
-      System.out.println();
-      num++;
+    Scanner input = new Scanner(System.in);
+    if (cartList.size() > 0) {
+      for (Cart item : cartList) {
+        System.out.println("------ Cart Item ["+ num +"] -------");
+        System.out.println(item);
+        System.out.println();
+        num++;
+      }
+    } else {
+      System.out.println("Cart is empty!!! \n");
+      System.out.println("[1] Browser products");
+      System.out.println("[2] Back to home");
+      System.out.print("\n Choose action [_]: ");
+      int action = input.nextInt();
+      if(action == 1) {
+        showListProduct();
+      } else {
+        System.out.println("\n-----------------------------------\n");
+        showWelcomeStatement();
+      }
     }
   }
 
