@@ -3,6 +3,8 @@ import java.util.Scanner;
 
 public class App {
   static ArrayList<Cart> cartList = new ArrayList<Cart>();
+  static boolean isLogin = false;
+  static boolean isAdmin = false;
   public static void main(String[] args) {
       Scanner input = new Scanner(System.in);
 
@@ -29,6 +31,7 @@ public class App {
           break;
         case 2:
           System.out.println("\n ======== Login ======== \n");
+          login();
           break;
         case 3:
           System.out.println("\n ======== Register ======= \n");
@@ -57,17 +60,30 @@ public class App {
     }
   }
 
-  static void login(Scanner input) {
+  static void login() {
+    Scanner input = new Scanner(System.in);
     ReadUserData userData = new ReadUserData();
     ArrayList<User> users = userData.readUserData();
     System.out.print("Enter username: ");
     String username = input.nextLine();
     System.out.print("Enter password: ");
     String password = input.nextLine();
-
+    
     for ( User u: users) {
-      ///
+      if (username.equals(u.getUsername()) && password.equals(u.getPassword())) {
+        isLogin = true;
+        // Check admin
+        if (u.getRole() == "admin") { 
+          isAdmin = true;
+        }
+        System.out.print("Login success!");
+      }
     }
+
+    if (!isLogin) {
+      System.out.print("Login fail!");
+    }
+    
     // for (int i = 0; i < users.size(); i++) {
     //   User us = new User
     // }
