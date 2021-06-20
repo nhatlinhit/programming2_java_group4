@@ -8,7 +8,7 @@ public class WriteProductData {
     
     boolean continueInputData = true;
     int isContinue = 1;
-    FileWriter myWriter = new FileWriter("products.txt", false); // false replace file
+    FileWriter myWriter = new FileWriter("productsData.txt", false); // false replace file
 
     do {
       Scanner input = new Scanner(System.in);

@@ -3,13 +3,13 @@ import java.io.FileWriter;   // Import the FileWriter class
 import java.io.IOException;  // Import the IOException class to handle errors
 import java.util.Scanner;
 
-public class WriteCustomerData {
+public class WriteUserData {
   public static void main(String[] args) throws IOException {
     
     boolean continueInputData = true;
     int isContinue = 1;
-    FileWriter myWriter = new FileWriter("customers.txt", false); // false replace file
-    int id = 1;
+    FileWriter myWriter = new FileWriter("usersData.txt", false); // false replace file
+    int count = 1;
     
     do {
       System.out.println("===== Create new user ===== ");
@@ -18,21 +18,25 @@ public class WriteCustomerData {
       String username = input.nextLine();
       System.out.print("Enter password: ");
       String password = input.nextLine();
-      System.out.print("Enter customer's name: ");
+      System.out.print("Enter user's role: ");
+      String role = input.nextLine();
+      System.out.print("Enter user's name: ");
       String name = input.nextLine();
-      System.out.print("Enter customer's address: ");
+      System.out.print("Enter user's phone: ");
+      String phone = input.nextLine();
+      System.out.print("Enter user's address: ");
       String address = input.nextLine();
-      System.out.print("Enter customer's credit card number: ");
+      System.out.print("Enter user's credit card number: ");
       String creditCard = input.nextLine();
       
-      System.out.println("\nCustomer info: \n - Username: " + username + "\n - Password: " + password + "\n - Name: " + name + "\n - Address: " + address + "\n - Credit card: " + creditCard );
+      System.out.println("\n User info: \n - Username: " + username + "\n - Password: " + password + "\n - Name: " + name + "\n - Address: " + address + "\n - Credit card: " + creditCard );
+      String userId = "U00" + count;
+      String userDataLine =  userId + "/" + username + "/" + password + "/" + role + "/" + name + "/" + phone + "/" + address + "/" + creditCard + "\n";
 
-      String customerDataLine =  id + "/" + username + "/" + password + "/" + name + "/" + address + "/" + creditCard + "\n";
+      myWriter.write(userDataLine);
+      count += 1;
 
-      myWriter.write(customerDataLine);
-      id++;
-
-      System.out.println("\nContinue input customer data? \n [1] Yes  [2] No ");
+      System.out.println("\nContinue input user data? \n [1] Yes  [2] No ");
 
       isContinue = input.nextInt();
 

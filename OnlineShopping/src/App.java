@@ -55,7 +55,22 @@ public class App {
     } else {
       showWelcomeStatement(input);
     }
+  }
 
+  static void login(Scanner input) {
+    ReadUserData userData = new ReadUserData();
+    ArrayList<User> users = userData.readUserData();
+    System.out.print("Enter username: ");
+    String username = input.nextLine();
+    System.out.print("Enter password: ");
+    String password = input.nextLine();
+
+    for ( User u: users) {
+      ///
+    }
+    // for (int i = 0; i < users.size(); i++) {
+    //   User us = new User
+    // }
   }
 
   static void addToCart(Scanner input, ArrayList<Product> products) {

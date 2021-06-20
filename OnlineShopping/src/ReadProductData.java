@@ -11,7 +11,7 @@ public class ReadProductData {
 		ArrayList<Product> products = new ArrayList<Product>();
 		int num = 1;
 		try {
-			reader = new BufferedReader(new FileReader("products.txt"));
+			reader = new BufferedReader(new FileReader("productsData.txt"));
 			String line = reader.readLine();
 
 			while (line != null) {
