@@ -1,13 +1,18 @@
 import java.util.ArrayList;
 import java.util.Scanner;
+import java.io.FileWriter;   // Import the FileWriter class
+import java.io.IOException;  // Import the IOException class to handle errors
 
 public class App {
+  static ArrayList<User> users;
   static ArrayList<Cart> cartList = new ArrayList<Cart>();
   static Order currentOrder;
   static boolean isLogin = false;
   static boolean isAdmin = false;
   static User loggedUser;
   public static void main(String[] args) {
+      ReadUserData userData = new ReadUserData();
+      users = userData.readUserData();
       Scanner input = new Scanner(System.in);
       System.out.println("\n ============ Shopping Online System - Group 4 =============== \n");
 
@@ -41,6 +46,11 @@ public class App {
             break;
           case 3:
             System.out.println("\n======== Register ======= \n");
+            try {
+              register();
+            } catch (IOException e) {
+              e.printStackTrace();
+            }
             break;
           case 4:
             System.out.println("\n========= Cart ======== \n");
@@ -99,8 +109,6 @@ public class App {
 
   static void login() {
     Scanner input = new Scanner(System.in);
-    ReadUserData userData = new ReadUserData();
-    ArrayList<User> users = userData.readUserData();
     System.out.print("Enter username: ");
     String username = input.nextLine();
     System.out.print("Enter password: ");
@@ -140,6 +148,49 @@ public class App {
     isLogin = false;
     System.out.println("\n-----------------------------------\n");
     showWelcomeStatement();
+  }
+
+  static void register() throws IOException {
+      FileWriter myWriter = new FileWriter("usersData.txt", true); // true append to file
+      Scanner input = new Scanner(System.in);
+      System.out.println("-------- Register new account ---------");
+      System.out.print("Enter username: ");
+      String username = input.nextLine();
+      System.out.print("Enter password: ");
+      String password = input.nextLine();
+      System.out.print("Enter user's name: ");
+      String name = input.nextLine();
+      System.out.print("Enter user's phone: ");
+      String phone = input.nextLine();
+      System.out.print("Enter user's address: ");
+      String address = input.nextLine();
+      System.out.print("Enter user's credit card number: ");
+      String creditCard = input.nextLine();
+      final String role = "user";
+
+      int count = users.size() + 1;
+      String userId = "U00" + count ;
+      String userDataLine =  userId + "/" + username + "/" + password + "/" + role + "/" + name + "/" + phone + "/" + address + "/" + creditCard + "\n";
+
+      myWriter.write(userDataLine);
+      myWriter.close();
+      User newAccount = new User(userId, username, password, role, name, phone, address, creditCard);
+      users.add(newAccount);
+      
+      System.out.println();
+      System.out.println("[1] Login");
+      System.out.println("[2] Back to home");
+      System.out.print("\n Choose action [_]: ");
+      int action = input.nextInt();
+
+      if (action == 1) {
+        System.out.println("\n======== Login ======== \n");
+        login();
+      } else {
+        System.out.println("\n-----------------------------------\n");
+        showWelcomeStatement();
+      }
+
   }
 
   static void addToCart(Scanner input, ArrayList<Product> products) {

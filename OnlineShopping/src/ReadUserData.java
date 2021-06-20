@@ -4,7 +4,6 @@ import java.io.IOException;
 import java.util.ArrayList;
 
 public class ReadUserData {
-	
 
 	public ArrayList<User> readUserData() {
 		BufferedReader reader;

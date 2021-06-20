@@ -1,5 +1,3 @@
-import java.util.Scanner;
-
 public class User {
   private String userId;
   private String username;
@@ -52,25 +50,6 @@ public class User {
 
   public void setName(String name) {
       this.name = name;
-  }
-
-  public void registerAccount() {
-      Scanner input = new Scanner(System.in);
-      System.out.println("===== Register new account ===== ");
-      System.out.print("Enter username: ");
-      String username = input.nextLine();
-      System.out.print("Enter password: ");
-      String password = input.nextLine();
-      System.out.print("Enter user's name: ");
-      String name = input.nextLine();
-      System.out.print("Enter user's phone: ");
-      String phone = input.nextLine();
-      System.out.print("Enter user's address: ");
-      String address = input.nextLine();
-      System.out.print("Enter user's credit card number: ");
-      String creditCard = input.nextLine();
-
-      final String role = "user";
   }
 
   @Override
