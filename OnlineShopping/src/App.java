@@ -3,6 +3,7 @@ import java.util.Scanner;
 
 public class App {
   static ArrayList<Cart> cartList = new ArrayList<Cart>();
+  static Order currentOrder;
   static boolean isLogin = false;
   static boolean isAdmin = false;
   static User loggedUser;
@@ -126,6 +127,7 @@ public class App {
       System.out.print("\n Choose action [_]: ");
       int action = input.nextInt();
       if (action == 1) {
+        System.out.println("\n======== Login ======== \n");
         login();
       } else {
         System.out.println("\n-----------------------------------\n");
@@ -136,7 +138,6 @@ public class App {
 
   static void logout() {
     isLogin = false;
-    loggedUser = null;
     System.out.println("\n-----------------------------------\n");
     showWelcomeStatement();
   }
@@ -149,19 +150,39 @@ public class App {
       int index = prodNum-1;
       Product item = products.get(index);
 
-      System.out.print("Enter quantity of ["+ item.getName() +"] add to cart: ");
+      System.out.print("How many "+ item.getName() +" add to cart: ");
       int qty = input.nextInt();
+      
+      // Check exist in cart
+      boolean existItem = false;
+      for (int i = 0; i < cartList.size(); i++) {
+        Product cartProd = cartList.get(i).getProduct();
+        if (cartProd.equals(item)) {
+          existItem = true;
+          // update cart item with new quantity
+          Cart cartItem = cartList.get(i);
+          int newQty = qty + cartItem.getQty();
+          cartItem.setQty(newQty);  
+          cartList.set(i, cartItem);
+        }
+      }
 
-      Cart cartItem = new Cart(item, qty);
-      cartList.add(cartItem);
+      if (!existItem) {
+        Cart cartItem = new Cart(item, qty);
+        cartList.add(cartItem);
+      }
 
-      System.out.println("\nContinue add product to cart? \n [1] Yes  [2] No ");
+      System.out.println("\nContinue add product to cart? \n [1] Yes  [2] Check out  [3] Back to home ");
       int isContinue = input.nextInt();
 
-      if (isContinue == 2) {
+      if (isContinue > 1) {
         continueAddToCart = false;
         System.out.println("\n-----------------------------------\n");
-        showWelcomeStatement();
+        if( isContinue == 2 ) {
+          checkout();
+        } else {
+          showWelcomeStatement();
+        }
       }
     } while(continueAddToCart);
   }
@@ -176,14 +197,84 @@ public class App {
         System.out.println();
         num++;
       }
+      System.out.println("[1] View products");
+      System.out.println("[2] Check out");
+      System.out.println("[3] Back to home");
+      System.out.print("\n Choose action [_]: ");
+      int action = input.nextInt();
+      switch (action) {
+        case 1:
+          showListProduct();
+          break;
+        case 2:
+          checkout();
+          break;
+        case 3:
+          showWelcomeStatement();
+          break;
+        default:
+          showListProduct();
+      }
     } else {
       System.out.println("Cart is empty!!! \n");
-      System.out.println("[1] Browser products");
+      System.out.println("[1] View products");
       System.out.println("[2] Back to home");
       System.out.print("\n Choose action [_]: ");
       int action = input.nextInt();
       if(action == 1) {
         showListProduct();
+      } else {
+        System.out.println("\n-----------------------------------\n");
+        showWelcomeStatement();
+      }
+    }
+  }
+
+  static void checkout() {
+    Scanner input = new Scanner(System.in);
+    if (isLogin) {
+      Order newOrder = new Order(loggedUser);
+      newOrder.setCartItems(cartList);
+      int randomNum = (int) (Math.random() * (9999 - 1)) + 1; // Create random ID
+      newOrder.setOrderID("OD"+randomNum);
+      currentOrder = newOrder;
+
+      // Clear cart
+      cartList = new ArrayList<Cart>();
+
+      System.out.println("\n=========== Order ==============");
+      System.out.println(newOrder);
+      System.out.println();
+
+      System.out.println("[1] Payment \t [2] Cancel");
+      System.out.print("\n Choose action [_]: ");
+      int action = input.nextInt();
+
+      if (action == 1) {
+        currentOrder.payment();
+        System.out.println("\n Payment successful amount "+ currentOrder.getTotal() +" for order #"+currentOrder.getOrderID()+". \n");
+        System.out.println("\n=========== Order ==============");
+        System.out.println(currentOrder);
+        System.out.println("\n---------------------------\n");
+        showWelcomeStatement();
+      } else {
+        currentOrder.cancelOrder();
+        System.out.println("\n Order #"+currentOrder.getOrderID()+" is cancelled!\n");
+        System.out.println("\n=========== Order ==============");
+        System.out.println(currentOrder);
+        System.out.println("\n---------------------------\n");
+        showWelcomeStatement();
+      }
+
+    } else {
+      System.out.println("\nYou have not logged in yet!\n");
+      System.out.println("[1] Login");
+      System.out.println("[2] Back to home");
+      System.out.print("\n Choose action [_]: ");
+      int action = input.nextInt();
+      if(action == 1) {
+        System.out.println("\n======== Login ======== \n");
+        login();
       } else {
         System.out.println("\n-----------------------------------\n");
         showWelcomeStatement();

@@ -18,7 +18,6 @@ public class Product {
      this.stock = stock;
   }
   
-  
   public String getProductId() {
      return productId;
   }
@@ -69,7 +68,7 @@ public class Product {
 
   @Override
   public String toString() {
-     return " - ID: " + productId + "\n - Name: " + name + "\n - Description: " + description+ "\n - Category: " + category +  "\n - Price: " + price + "\n - Stock: " + stock;
+     return " - ID: #" + productId + "\n - Name: " + name + "\n - Description: " + description+ "\n - Category: " + category +  "\n - Price: " + price + "\n - Stock: " + stock;
   }
   
 }

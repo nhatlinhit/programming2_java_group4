@@ -3,21 +3,30 @@ import java.text.NumberFormat;
 import java.util.*;
 
 public class Order {
-  private Customer customer;
-  private List<OrderItem> orderItems = new ArrayList<>(); // Sample for storage Products data 
+   enum OrderStatus {
+      CREATED,
+      PAID,
+      CONFIRMED,
+      CANCELLED
+    }
+
+  private User user;
+  private List<Cart> cartItems = new ArrayList<>(); // Sample for storage Products data 
   private Date orderDate = new Date();
-  private Integer orderID = null;
+  private String orderID;
+  private OrderStatus status;
 
-  public Order(Customer customer) {
-     this.customer = customer;
+  public Order(User user) {
+     this.user = user;
+     this.status = OrderStatus.CREATED;
   }
 
-  public Customer getCustomer() {
-     return customer;
+  public User getUser() {
+     return user;
   }
 
-  public void setCustomer(Customer customer) {
-     this.customer = customer;
+  public void setUser(User user) {
+     this.user = user;
   }
 
   public Date getOrderDate() {
@@ -28,33 +37,48 @@ public class Order {
      this.orderDate = orderDate;
   }
 
-  public List<OrderItem> getOrderItems() {
-     return orderItems;
+  public List<Cart> getCartItems() {
+     return cartItems;
   }
 
-  public void setOrderItems(List<OrderItem> orderItems) {
-     this.orderItems = orderItems;
+  public void setCartItems(List<Cart> cartItems) {
+     this.cartItems = cartItems;
   }
 
-  public int getOrderID() {
+  public String getOrderID() {
      return orderID;
   }
 
-  public void setOrderID(int orderID) {
+  public OrderStatus getOrderStatus() {
+   return status;
+}
+
+  public void setOrderID(String orderID) {
      this.orderID = orderID;
   }
+
+  public void payment() {
+     this.status = OrderStatus.PAID;
+  }
+
+   public void adminConfirm() {
+      this.status = OrderStatus.CONFIRMED;
+   }
+
+   public void cancelOrder() {
+      this.status = OrderStatus.CANCELLED;
+   }
   
   public double getTotal(){
      double total = 0;
   
-     // loop through order items
+     // loop through cart items
        // for each
-     for(OrderItem order : orderItems){
-        total = total + order.getItemTotal();
+     for(Cart cart : cartItems){
+        total = total + cart.getItemAmount();
      }
          // call getItemTotal, and add to total
      return total;
-     
   }
   
   public String getCurrencyTotal() {
@@ -62,14 +86,13 @@ public class Order {
      return df.format(getTotal());
   }
   
-  public void addItem(OrderItem item){
-     orderItems.add(item);
+  public void addItem(Cart item){
+     cartItems.add(item);
   }
 
   @Override
   public String toString() {
-     return "Order{" + "orderItems=" + orderItems + ", orderDate=" + orderDate + ", customerID=" + orderID + '}';
+     return "\n - Order ID: #" + getOrderID() + "\n - Order Date: " + orderDate + "\n - Order status: " + status + "\n - User's name: " + getUser().getName()  + "\n Items: " + cartItems + "\n - Total: " + getTotal() + '\n';
   }
-  
   
 }

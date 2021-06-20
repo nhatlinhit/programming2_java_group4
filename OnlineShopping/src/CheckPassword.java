@@ -1,6 +1,6 @@
 import java.util.Scanner;
 
-public class checkpassword {
+public class CheckPassword {
 public static void main(String[] args) throws Exception {
     System.out.println("Enter a password.");
     Scanner input = new Scanner(System.in);
@@ -14,9 +14,9 @@ public static void main(String[] args) throws Exception {
     }
 }
 
-static void validatePassword(String password) throws PasswordException {
-    if (password.length() < 24 && password.length() > 10) {
-        throw new PasswordException("Password length is less than 24");
+public static void validatePassword(String password) throws PasswordException {
+    if (password.length() < 20 && password.length() > 6) {
+        throw new PasswordException("Password length is greater than 6 and less than 20 characters");
     }
 
     boolean upperCheck = false;
@@ -48,6 +48,7 @@ static void validatePassword(String password) throws PasswordException {
     }
 
     System.out.println("Valid password.");
+    validPa
 }
 
 static class PasswordException extends Exception {
